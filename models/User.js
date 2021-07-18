@@ -1,6 +1,10 @@
-const mongoose = requier('mongoose');
 
-const userSchema = mongoose.Schema({
+import mongoose from 'mongoose';
+
+const { Schema, model } = mongoose;
+
+
+const userSchema = Schema({
     name: {
         type: String,
         maxlength: 50
@@ -13,7 +17,7 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         minlength: 5
-    },
+    }, 
     lastname: {
         type: String,
         maxlength: 50
@@ -31,6 +35,6 @@ const userSchema = mongoose.Schema({
     }
 })
 
-const User = mongoose.model('User', userSchema)
+const User = model('User', userSchema)
 
-module.export = { User }
+export default User;
