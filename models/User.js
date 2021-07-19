@@ -53,8 +53,21 @@ userSchema.pre('save', function( next ) {
                 next()
             })
         })
+    } else {
+        next()
     }
 })
+
+
+userSchema.methods.comparePassword = function(rawPassword, cb) {
+
+    bcrypt.compare(rawPassword, this.password, function(err, isMatch) {
+        if (err) return cb(err)
+        cb(null, isMatch)
+    })
+}
+
+
 
 const User = model('User', userSchema)
 
