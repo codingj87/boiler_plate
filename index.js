@@ -1,12 +1,13 @@
 // import { express } from 'express';
 import express, { urlencoded, json } from 'express'
 import mongoose from 'mongoose';
-const app = express()
-const port = 5000
 import User from './models/User.js'
+import cookieParser from 'cookie-parser'
 
 // const mongoURI = require('./config/key.cjs');
 import { mongoURI } from './config/key.js';
+const app = express()
+const port = 500
 
 app.use(urlencoded({extended: true}));
 
@@ -53,7 +54,15 @@ app.post('/login', (req, res) => {
         return json({ loginSuccess: false, message: '비밀번호가 틀렸습니다'})
       }
 
-      // 비밀번호까지 맞았다면 토큰 생성  
+      // 비밀번호까지 맞았다면 토큰 생성 
+      user.generateToken((err, user) => {
+        if (err) return res.status(400).send(err);
+
+        // 토큰 저장, 쿠키? 세션? 로컬스토리지?
+        res.cookie("x-auth", user.token)
+          .status(200)
+          .json({ loginSuccess: true, userId: user._id})
+      })
       
     })
   })

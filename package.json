@@ -1,7 +1,6 @@
 {
   "name": "boiler-plate",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "engine": {
     "node": "14.17.3",
@@ -18,10 +17,22 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parse": "^0.1.0",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
-    "mongoose": "^5.13.3"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.3",
+    "upgrade": "^1.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codingj87/boiler_plate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codingj87/boiler_plate/issues"
+  },
+  "homepage": "https://github.com/codingj87/boiler_plate#readme",
+  "description": ""
 }

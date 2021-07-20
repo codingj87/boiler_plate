@@ -1,6 +1,7 @@
 
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const saltRounds = 10;
 
@@ -65,6 +66,22 @@ userSchema.methods.comparePassword = function(rawPassword, cb) {
         if (err) return cb(err)
         cb(null, isMatch)
     })
+}
+
+userSchema.methods.generateToken = function(cb) {
+
+    const user = this;
+
+    // jsonwebtoken 을 이용해서 토큰을 생성하기
+    const token = jwt.sign(user._id.toHexString(), 'secretToken')
+
+    user.token = token;
+    user.save(function(err, user) {
+        if (err) return cb(err)
+        cv(null, user);
+
+    })
+
 }
 
 
