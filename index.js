@@ -3,15 +3,17 @@ import express, { urlencoded, json } from 'express'
 import mongoose from 'mongoose';
 import User from './models/User.js'
 import cookieParser from 'cookie-parser'
+import auth from './middleware/auth.js'
+
 
 // const mongoURI = require('./config/key.cjs');
 import { mongoURI } from './config/key.js';
 const app = express()
-const port = 500
+const port = 5000
 
 app.use(urlencoded({extended: true}));
-
 app.use(json());
+app.use(cookieParser());
 
 const { connect } = mongoose;
 connect(mongoURI, {
@@ -24,7 +26,7 @@ app.get('/', (req, res) => {
 })
 
 
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
 
   const user = new User(req.body)
 
@@ -37,7 +39,7 @@ app.post('/register', (req, res) => {
   })
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
 
   // 요청된 이메일이 데이터베이스에 있는지 찾는다.
   User.findOne({ email: req.body.email }, (err, user) => {
@@ -66,6 +68,35 @@ app.post('/login', (req, res) => {
       
     })
   })
+})
+
+app.get('/api/users/auth', auth, (req, res) => {
+  
+  // 여기까지 미들웨어를 통과해 왔다는 얘기는 Authentication 이 True 라는 말.
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: user.email,
+    name: user.name,
+    lastname: user.lastname,
+    role: user.role,
+    image: user.image
+  })
+})
+
+app.get('/api/users/logout', auth, (req, res) => {
+  User.findOneAndUpdate(
+    {_id: req.user._id}, 
+    { token: ""},
+    (err, user) => {
+      if (err) return res.json( { success: false, err });
+      return res.status(200).send({
+        success: true
+      })
+    }
+
+    )
 })
 
 app.listen(port, () => {
