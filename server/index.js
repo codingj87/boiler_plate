@@ -25,6 +25,9 @@ app.get('/', (req, res) => {
   res.send('Hello World! hi')
 })
 
+app.get('/api/hello', (req, res) => {
+  res.send('hello ~~~~~~')
+})
 
 app.post('/api/users/register', (req, res) => {
 
