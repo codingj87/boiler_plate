@@ -2,6 +2,7 @@ import User from '../models/User.js';
 
 const auth = (req, res, next) => {
 
+  console.log('hahah')
   // 인증처리를 하는 곳
 
   // 클라이언트 쿠키에서 토큰을 가져온다
